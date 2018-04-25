@@ -15,6 +15,8 @@ function initRuleDeclarations (rule) {
     console.log(`Starting ${protocol} listener`)
     const listener = availableInputs.handler.initializer
     listener(availableInputs.handler.prefix)
+  } else {
+    console.log(`No valid handler found for protocol '${protocol}'`)
   }
 }
 
