@@ -1,0 +1,11 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "prettier.singleQuote": true,
+    "prettier.semi": false
+  }
+}
