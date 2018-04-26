@@ -5,7 +5,7 @@ function startSocketServer (msgPrefix) {
   io.on('connect', client =>
     client.on(msgPrefix, function (data) {
       const inputMappedToOutput = commandTable.output(commandTable.input(data))
-      console.log(`The Conch has received a message, '${data}', which according your rules, means it should output '${inputMappedToOutput}'`)
+      console.log(`The Conch has received a message, '${data}', which according to your rules, means it should output '${inputMappedToOutput}'`)
       io.emit('IR_', inputMappedToOutput)
     })
   )
