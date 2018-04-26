@@ -51,4 +51,18 @@ From just these few property declarations, The Conch knows to look in its univer
 
 So from just a few simple declarations, The Conch determines the commands to look listen for, the commands to "speak", and automatically sets up and configures handlers to do all the grunt work. 
 
-Every rule is an object that contains a pair of nested objects: an input object, and an output object. The user can declare as many properties as they'd like, but The Conch will only validate rules that make sense to it. If a mapping is impossible or ambiguous, then The Conch will issue an error.  
+Every rule is an object that contains a pair of nested objects: an input object, and an output object. The user can declare as many properties as they'd like, but The Conch will only validate rules that make sense to it. If a mapping is impossible or ambiguous, then The Conch will issue an error. 
+
+The Ocean
+---------
+
+The Conch follows an MVC architecture, with The Ocean representing our Model. The ocean is vast, unforgiving and teeming with all sorts of life. Our model (The Ocean) is made up of all the relevant, known data regarding our devices. The Ocean is responsible for keeping track of all of your devices. It knows what devices you have in your setup, as well as what those devices output and what they can take as input. The Ocean is a vast repository of information about home entertainment devices, crowd-sourced by information provided by you and the rest of our users.
+
+The Island
+----------
+If The Ocean is our Model, then The Island is our View. The island is our paradise, an idealized microcosm of the broader world. Our view (The Island) takes all the necessary information from The Ocean and presents it to the user in a way that is easy to work with, responsive and accessible from a broad range of devices.
+
+The Conch
+---------
+If The Ocean is our Model and The Island is our View, then The Conch is... you guessed it... our Controller. The Conch is the great democratizer. It is the brains and the reason behind everything. The Conch is responsible for making use of the data from The Ocean, user interactions from The Island, and manipulating that data in such a manner that our devices do our bidding, rather than the converse. The Conch represents control over both The Ocean and The Island.
+

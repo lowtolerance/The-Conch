@@ -38,8 +38,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script>
       var socket = io('http://localhost:3010')
-      socket.emit('IR_', 'A90')
-      document.write('emitting value')
+      
+      socket.on('connect', function() {
+        console.log('Connected')
+        socket.on('IR_', function(data) {
+          document.write(data)
+        })
+        socket.emit('IR_', 'A90')
+      })
     </script>
   </body>
 </html>
