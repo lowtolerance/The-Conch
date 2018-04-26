@@ -24,7 +24,11 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div id="root"></div>
+    <div id="root">
+      <button name="TV_POWER_TOGGLE" onclick="handlePowerClick()">Power</button>
+      <button name="TV_VOLUME_UP" onclick="handleVolumeUpClick()">Volume Up</button>
+      <button name="TV_VOLUME_DOWN" onclick="handleVolumeDownClick()">Volume Down</button>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -39,10 +43,21 @@
     <script>
       var socket = io('http://localhost:3010')
       
+      function handlePowerClick(e) {
+        socket.emit('IR_', 'A90')
+      }
+
+      function handleVolumeUpClick(e) {
+        socket.emit('IR_', '890')
+      }
+
+      function handleVolumeDownClick(e) {
+        socket.emit('IR_', 'B90')
+      }
       socket.on('connect', function() {
         console.log('Connected')
         socket.on('IR_', function(data) {
-          document.write(data)
+         console.log(data)
         })
         socket.emit('IR_', 'A90')
       })
