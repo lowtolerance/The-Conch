@@ -7,16 +7,24 @@ const commandTable = {
   input: function (command) {
     const commands = {
       'A90': function () {
-        return 'TV_POWER_TOGGLE'
+        return {
+          commandString: 'TV_POWER_TOGGLE'
+        }
       },
       '890': function () {
-        return 'TV_VOLUME_UP'
+        return {
+          commandString: 'TV_VOLUME_UP'
+        }
       },
       'B90': function () {
-        return 'TV_VOLUME_DOWN'
+        return {
+          commandString: 'TV_VOLUME_DOWN'
+        }
       },
       default: function () {
-        return 'UNDEFINED'
+        return {
+          commandString: 'UNDEFINED'
+        }
       }
     }
     return (commands[command] || commands['default'])()
@@ -24,16 +32,24 @@ const commandTable = {
   output: function (command) {
     const commands = {
       'TV_POWER_TOGGLE': function () {
-        return 'echo as 0 | cec-client -s1 -d'
+        return {
+          commandString: 'echo as 0 | cec-client -s1 -d'
+        }
       },
       'TV_VOLUME_UP': function () {
-        return '45ac3a'
+        return {
+          commandString: '45ac3a'
+        }
       },
       'TV_VOLUME_DOWN': function () {
-        return '45ab6e'
+        return {
+          commandString: '45ab6e'
+        }
       },
       default: function () {
-        return 'UNDEFINED'
+        return {
+          commandString: 'UNDEFINED'
+        }
       }
     }
     return (commands[command] || commands['default'])()
