@@ -11,6 +11,7 @@ const mapU2O = (data) => {
 const mapI2O = (data) => {
   return mapU2O(mapI2U(data))
 }
+
 function startSocketServer (msgPrefix) {
   var io = require('socket.io')()
   io.on('connect', client =>
