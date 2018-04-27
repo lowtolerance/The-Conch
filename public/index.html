@@ -27,14 +27,12 @@
     You need to enable JavaScript to run this app.
   </noscript>
   <div id="root">
-    <div>
-      <table id="output">
-
-      </table>
-    </div>
+    
+    
     <button name="TV_POWER_TOGGLE" onclick="handlePowerClick()">Power</button>
     <button name="TV_VOLUME_UP" onclick="handleVolumeUpClick()">Volume Up</button>
     <button name="TV_VOLUME_DOWN" onclick="handleVolumeDownClick()">Volume Down</button>
+    <ul id="output"></ul>
   </div>
   <!--
       This HTML file is a template.
@@ -65,8 +63,6 @@
 
     socket.on('connect', function () {
       console.log('Connected')
-      
-      socket.emit('IR_', 'A90')
       socket.on('IR_', function (data) {
         const ul = document.getElementById('output')
         const li = document.createElement('li')
