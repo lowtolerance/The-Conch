@@ -1,4 +1,4 @@
-function validateIOProperties (rule) {
+function ioPropertiesAreValid (rule) {
   let result = {
     valid: true,
     errors: []
@@ -21,22 +21,20 @@ function validateIOProperties (rule) {
       result.errors.push(`Rule does not contain an ${pathway} definition`)
     }
     for (let property in rule[pathway]) {
-      if (!validProperties.input.hasOwnProperty(property)) {
+      if (!validProperties[pathway].hasOwnProperty(property)) {
         result.valid = false
-        result.errors.push(`Input property '${property}' is not valid`)
+        result.errors.push(`${pathway.charAt(0).toUpperCase() + pathway.slice(1)} property '${property}' is not valid`)
       }
     }
   }
   return result
 }
 
-export default function validateRule (rule) {
-  let result = validateIOProperties(rule)
+export default function ruleValidates (rule) {
+  let result = ioPropertiesAreValid(rule)
   if (!result.valid) {
     result.errors.map(error => console.log(`ERROR: ${error}`))
     return false
-  } else {
-    console.log('Rule passes validation!')
   }
   return true
 }

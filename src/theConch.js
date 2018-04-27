@@ -1,5 +1,9 @@
 import irPowerToggleToCEC from './the_conch/irPowerToggleToCEC'
-import initRuleDeclarations from './the_conch/initRuleDeclarations'
-import validateRule from './the_conch/validateRule'
+import enactNewRule from './the_conch/enactNewRule'
+import ruleValidates from './the_conch/ruleValidates'
 
-validateRule(irPowerToggleToCEC) ? initRuleDeclarations(irPowerToggleToCEC) : console.log('unable to initialize rule declarations (see errors)')
+if (ruleValidates(irPowerToggleToCEC)) {
+  enactNewRule(irPowerToggleToCEC)
+} else {
+  console.log('unable to initialize rule declarations (see errors)')
+}
