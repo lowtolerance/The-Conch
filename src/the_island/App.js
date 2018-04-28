@@ -1,41 +1,58 @@
 import React, { Component } from 'react'
+import io from 'socket.io-client'
 
 class App extends Component {
   constructor (props) {
     super(props)
 
-    this.state = { newMessage: 'Hello, world!' }
-    function handlePowerClick() {
-      socket.emit('IR_', 'A90')
-    }
+    this.state = { msg: 'The Conch awaits', newMessage: 'The Conch awaits', command: '' }
+    this.handlePowerClick = this.handlePowerClick.bind(this)
+    this.handleVolumeDownClick = this.handleVolumeDownClick.bind(this)
+    this.handleVolumeUpClick = this.handleVolumeUpClick.bind(this)
+    this.clearMessage = this.clearMessage.bind(this)
+    this.updateMessage = this.updateMessage.bind(this)
+  }
+  handlePowerClick () {
+    io.emit('IR_', 'A90')
+  }
 
-    function handleVolumeUpClick() {
-      socket.emit('IR_', '890')
-    }
+  handleVolumeUpClick () {
+    io.emit('IR_', '890')
+  }
 
-    function handleVolumeDownClick() {
-      socket.emit('IR_', 'B90')
-    }
-    
-    function clearMessage() {
-      const msg = document.getElementById('msg')
-      msg.textContent = 'The Conch awaits'
-      clearInterval(newMessage)
-    }
+  handleVolumeDownClick () {
+    io.emit('IR_', 'B90')
+  }
 
-    function updateMessage (data) {
-      this.setState(newMessage) = setInterval(clearMessage, 5000)      
-      msg.textContent = data
-    }
+  clearMessage () {
+    this.setState({msg: 'The Conch awaits'})
+    clearInterval(this.state.newMessage)
+  }
+
+  updateMessage (data) {
+    this.setState.newMessage = setInterval(this.clearMessage, 5000)
+    this.setState({msg: data})
+  }
+
+  componentDidMount () {
+    io.connect('http://localist:3010')
+    io.on('connect', function () {
+      io.on('IR_', function (data) {
+        this.setState({command: data})
+      })
+      io.on('tcMessage', function (data) {
+        this.setState({newMessage: data})
+      })
+    })
   }
   render () {
     return (
       <div className='App'>
-        <p id="msg">The Conch awaits</p>
-        <button name="TV_POWER_TOGGLE" onClick={handlePowerClick()}>Power</button>
-        <button name="TV_VOLUME_UP" onClick={handleVolumeUpClick()}>Volume Up</button>
-        <button name="TV_VOLUME_DOWN" onClick={handleVolumeDownClick()}>Volume Down</button>
-        <ul id="output"></ul>
+        <p id='msg'>The Conch awaits</p>
+        <button name='TV_POWER_TOGGLE' onClick={this.handlePowerClick}>Power</button>
+        <button name='TV_VOLUME_UP' onClick={this.handleVolumeUpClick}>Volume Up</button>
+        <button name='TV_VOLUME_DOWN' onClick={this.handleVolumeDownClick}>Volume Down</button>
+        <ul id='output' />
       </div>
     )
   }
