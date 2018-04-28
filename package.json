@@ -19,5 +19,20 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1"
-  }
+  },
+  "description": "The Conch",
+  "main": "src/the_island/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lowtolerance/the-conch.git"
+  },
+  "author": "lowtolerance",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lowtolerance/the-conch/issues"
+  },
+  "homepage": "https://github.com/lowtolerance/the-conch#readme"
 }
