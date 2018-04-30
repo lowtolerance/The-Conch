@@ -4,7 +4,7 @@ import client from 'socket.io-client'
 const Message = (props) =>
   <div className='jumbotron'>
     <h1 className='display-4'>
-      {props.text}
+      The Conch <small>{props.text}</small>
     </h1>
   </div>
 
@@ -46,7 +46,7 @@ class Dashboard extends Component {
   constructor () {
     super()
     this.state = {
-      message: 'The Conch awaits',
+      message: ' awaits',
       history: [],
       actions: [
         {
@@ -78,7 +78,7 @@ class Dashboard extends Component {
     return (
       <div>
         <Message text={this.state.message} />
-        <div class="container">
+        <div className='container'>
           <Buttons actions={this.state.actions} handler={this.handleClick} />
           <CommandHistory history={this.state.history} />
         </div>
