@@ -1,46 +1,42 @@
 import React, { Component } from 'react'
-import io from 'socket.io-client'
+import client from 'socket.io-client'
 
 class App extends Component {
   constructor (props) {
     super(props)
 
     this.state = { msg: 'The Conch awaits', newMessage: 'The Conch awaits', command: '' }
-    this.handlePowerClick = this.handlePowerClick.bind(this)
-    this.handleVolumeDownClick = this.handleVolumeDownClick.bind(this)
-    this.handleVolumeUpClick = this.handleVolumeUpClick.bind(this)
-    this.clearMessage = this.clearMessage.bind(this)
-    this.updateMessage = this.updateMessage.bind(this)
-  }
-  handlePowerClick () {
-    io.emit('IR_', 'A90')
-  }
-
-  handleVolumeUpClick () {
-    io.emit('IR_', '890')
-  }
-
-  handleVolumeDownClick () {
-    io.emit('IR_', 'B90')
-  }
-
-  clearMessage () {
-    this.setState({msg: 'The Conch awaits'})
-    clearInterval(this.state.newMessage)
-  }
-
-  updateMessage (data) {
-    this.setState.newMessage = setInterval(this.clearMessage, 5000)
-    this.setState({msg: data})
   }
 
   componentDidMount () {
-    io.connect('http://localist:3010')
-    io.on('connect', function () {
-      io.on('IR_', function (data) {
+    function handlePowerClick () {
+      socket.emit('IR_', 'A90')
+    }
+
+    function handleVolumeUpClick () {
+      socket.emit('IR_', '890')
+    }
+
+    function handleVolumeDownClick () {
+      socket.emit('IR_', 'B90')
+    }
+
+    function clearMessage () {
+      this.setState({msg: 'The Conch awaits'})
+      clearInterval(this.state.newMessage)
+    }
+
+    function updateMessage (data) {
+      this.setState.newMessage = setInterval(this.clearMessage, 5000)
+      this.setState({msg: data})
+    }
+
+    const socket = client('http://localhost:3010')
+    socket.on('connect', function () {
+      socket.on('IR_', function (data) {
         this.setState({command: data})
       })
-      io.on('tcMessage', function (data) {
+      socket.on('tcMessage', function (data) {
         this.setState({newMessage: data})
       })
     })
