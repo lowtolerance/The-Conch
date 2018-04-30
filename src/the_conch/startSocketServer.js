@@ -1,6 +1,6 @@
 import commandTable from '../the_ocean/commandTable'
 
-export const mapI2U = (data) => {
+const mapI2U = (data) => {
   return commandTable.input(data).commandString
 }
 
