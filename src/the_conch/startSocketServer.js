@@ -1,6 +1,6 @@
 import commandTable from '../the_ocean/commandTable'
 
-const mapI2U = (data) => {
+export const mapI2U = (data) => {
   return commandTable.input(data).commandString
 }
 
@@ -16,7 +16,8 @@ function startSocketServer (msgPrefix) {
   var io = require('socket.io')()
   io.on('connect', client =>
     client.on(msgPrefix, function (data) {
-      const mappedIO = mapU2O(data))
+      const mappedIO = mapI2O(data)
+      console.log('Received message')
       io.emit('tcMessage', `The Conch has received a message, '${data}', which according to your rules, means it should output '${mappedIO}'`)
       io.emit('IR_', mappedIO)
     })
