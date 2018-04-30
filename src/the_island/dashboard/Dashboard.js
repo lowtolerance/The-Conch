@@ -1,17 +1,17 @@
 import React, {Component} from 'react'
 import client from 'socket.io-client'
 
-const Message = (props) => <h1>{props.text}</h1>
+const Message = (props) => <div className='jumbotron'><h1 className='display-4'>{props.text}</h1></div>
 
 const Button = (props) =>
-  <button
+  <button type='button' className='btn btn-outline-primary'
     name={props.action.command}
     onClick={(e) => { props.handler(props.action.command, e) }}>
     {props.action.name}
   </button>
 
 const Buttons = (props) =>
-  <div className='button-group'>
+  <div className='btn-group'>
     {props.actions.map(action =>
       <Button key={action.command} action={action} handler={props.handler} />
     )}
