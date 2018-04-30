@@ -1,10 +1,17 @@
 import React, {Component} from 'react'
 import client from 'socket.io-client'
 
-const Message = (props) => <div className='jumbotron'><h1 className='display-4'>{props.text}</h1></div>
+const Message = (props) =>
+  <div className='jumbotron'>
+    <h1 className='display-4'>
+      {props.text}
+    </h1>
+  </div>
 
 const Button = (props) =>
-  <button type='button' className='btn btn-outline-primary'
+  <button
+    type='button'
+    className='btn btn-outline-primary'
     name={props.action.command}
     onClick={(e) => { props.handler(props.action.command, e) }}>
     {props.action.name}
@@ -13,14 +20,27 @@ const Button = (props) =>
 const Buttons = (props) =>
   <div className='btn-group'>
     {props.actions.map(action =>
-      <Button key={action.command} action={action} handler={props.handler} />
+      <Button
+        key={action.command}
+        action={action}
+        handler={props.handler} />
     )}
   </div>
 
 const CommandHistory = (props) =>
-  <ul className='history'>
-    {props.history.map(command => <li key={command}>{command}</li>)}
-  </ul>
+  <table className='history table table-sm'>
+    <thead>
+      <tr>
+        <th>Command</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.history.map(command =>
+        <tr key={command}>
+          <td>{command}</td>
+        </tr>)}
+    </tbody>
+  </table>
 
 class Dashboard extends Component {
   constructor () {
@@ -58,8 +78,10 @@ class Dashboard extends Component {
     return (
       <div>
         <Message text={this.state.message} />
-        <Buttons actions={this.state.actions} handler={this.handleClick} />
-        <CommandHistory history={this.state.history} />
+        <div class="container">
+          <Buttons actions={this.state.actions} handler={this.handleClick} />
+          <CommandHistory history={this.state.history} />
+        </div>
       </div>
     )
   }
