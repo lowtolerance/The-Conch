@@ -1,7 +1,7 @@
 The Conch
 ========== 
 
-<blockquote>But there was a stillness about Ralph as he sat that marked him out: there was his size, and attractive appearance; and most obscurely, yet most powerfully, there was <em>The Conch<em>.</blockquote>
+<blockquote>But there was a stillness about Ralph as he sat that marked him out: there was his size, and attractive appearance; and most obscurely, yet most powerfully, there was <em>The Conch</em>.</blockquote>
 
 What is The Conch
 -----------------
