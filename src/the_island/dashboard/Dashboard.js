@@ -18,7 +18,7 @@ const Button = (props) =>
   </button>
 
 const Buttons = (props) =>
-  <div className='btn-group'>
+  <div className='col-5'>
     {props.actions.map(action =>
       <Button
         key={action.command}
@@ -28,19 +28,21 @@ const Buttons = (props) =>
   </div>
 
 const CommandHistory = (props) =>
-  <table className='history table table-sm'>
-    <thead>
-      <tr>
-        <th>Command</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.history.map(command =>
-        <tr key={command}>
-          <td>{command}</td>
-        </tr>)}
-    </tbody>
-  </table>
+  <div class='col-7'>
+    <table className='history table table-sm'>
+      <thead>
+        <tr>
+          <th>Command</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.history.map(command =>
+          <tr key={command}>
+            <td>{command}</td>
+          </tr>)}
+      </tbody>
+    </table>
+  </div>
 
 class Dashboard extends Component {
   constructor () {
@@ -79,8 +81,12 @@ class Dashboard extends Component {
       <div>
         <Message text={this.state.message} />
         <div className='container'>
-          <Buttons actions={this.state.actions} handler={this.handleClick} />
-          <CommandHistory history={this.state.history} />
+          <div class='row'>
+            <Buttons
+              actions={this.state.actions}
+              handler={this.handleClick} />
+            <CommandHistory history={this.state.history} />
+          </div>
         </div>
       </div>
     )
