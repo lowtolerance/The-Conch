@@ -1,18 +1,8 @@
+import validProperties from '../the_ocean/validProperties'
 function ioPropertiesAreValid (rule) {
   let result = {
     valid: true,
     errors: []
-  }
-
-  const validProperties = {
-    input: {
-      command: 'command',
-      protocol: 'protocol'
-    },
-    output: {
-      command: 'command',
-      protocol: 'protocol'
-    }
   }
 
   for (let pathway in validProperties) {
