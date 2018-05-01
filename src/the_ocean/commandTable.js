@@ -8,22 +8,22 @@ const commandTable = {
     const commands = {
       'A90': function () {
         return {
-          commandString: 'TV_POWER_TOGGLE'
+          value: 'TV_POWER_TOGGLE'
         }
       },
       '890': function () {
         return {
-          commandString: 'TV_VOLUME_UP'
+          value: 'TV_VOLUME_UP'
         }
       },
       'B90': function () {
         return {
-          commandString: 'TV_VOLUME_DOWN'
+          value: 'TV_VOLUME_DOWN'
         }
       },
       default: function () {
         return {
-          commandString: 'UNDEFINED'
+          value: 'UNDEFINED'
         }
       }
     }
@@ -33,22 +33,22 @@ const commandTable = {
     const commands = {
       'TV_POWER_TOGGLE': function () {
         return {
-          commandString: 'echo as 0 | cec-client -s1 -d'
+          value: 'echo as 0 | cec-client -s1 -d'
         }
       },
       'TV_VOLUME_UP': function () {
         return {
-          commandString: '45ac3a'
+          value: '45ac3a'
         }
       },
       'TV_VOLUME_DOWN': function () {
         return {
-          commandString: '45ab6e'
+          value: '45ab6e'
         }
       },
       default: function () {
         return {
-          commandString: 'UNDEFINED'
+          value: 'UNDEFINED'
         }
       }
     }

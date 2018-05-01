@@ -1,11 +1,15 @@
 import React, {Component} from 'react'
 import client from 'socket.io-client'
+import fire from '../../the_conch/firebaseInitializer'
 
 const Message = (props) =>
+  <small>
+    {props.message}
+  </small>
+
+const Header = (props) =>
   <div className='jumbotron'>
-    <h1 className='display-4'>
-      The Conch <small>{props.text}</small>
-    </h1>
+    <h1 className='display-4'>The Conch <Message message={props.message}>awakes</Message></h1>
   </div>
 
 const Button = (props) =>
@@ -17,18 +21,19 @@ const Button = (props) =>
     {props.action.name}
   </button>
 
-const Buttons = (props) =>
-  <div className='col-5'>
-    {props.actions.map(action =>
+const Buttons = (props) => {
+  return (
+    props.actions.map(action =>
       <Button
-        key={action.command}
-        action={action}
+        key={action.id}
+        action={action.name}
         handler={props.handler} />
-    )}
-  </div>
+    )
+  )
+}
 
 const CommandHistory = (props) =>
-  <div class='col-7'>
+  <div className='col-7'>
     <table className='history table table-sm'>
       <thead>
         <tr>
@@ -48,27 +53,24 @@ class Dashboard extends Component {
   constructor () {
     super()
     this.state = {
-      message: ' awaits',
+      message: ' awakes',
       history: [],
-      actions: [
-        {
-          command: 'A90',
-          name: 'Toggle Power'
-        },
-        {
-          command: '890',
-          name: 'Volume Up'
-        },
-        {
-          command: 'B90',
-          name: 'Volume Down'
-        }
-      ]
+      actions: []
     }
     this.handleClick = this.handleClick.bind(this)
     this.socket = client('http://192.168.1.46:3010')
     this.socket.on('IR_', data => this.setState({history: [...this.state.history, data]}))
     this.socket.on('tcMessage', data => this.setState({message: data}))
+  }
+
+  componentWillMount () {
+    this.setState({message: ' awaits'})
+    let actionsRef = fire.database().ref('actions')
+    actionsRef.on('child_added', snapshot => {
+      let action = { name: snapshot.val(), command: snapshot.val(), id: snapshot.key }
+      console.log(action.name)
+      this.setState({ actions: [action].concat(this.state.actions) })
+    })
   }
 
   handleClick (data, e) {
@@ -79,13 +81,15 @@ class Dashboard extends Component {
   render () {
     return (
       <div>
-        <Message text={this.state.message} />
+        <Header message={this.state.message} />
         <div className='container'>
-          <div class='row'>
-            <Buttons
-              actions={this.state.actions}
-              handler={this.handleClick} />
-            <CommandHistory history={this.state.history} />
+          <div className='row'>
+            <div className='col-5'>
+              <Buttons
+                actions={this.state.actions}
+                handler={this.handleClick} />
+              <CommandHistory history={this.state.history} />
+            </div>
           </div>
         </div>
       </div>
