@@ -18,7 +18,7 @@ function startSocketServer (msgPrefix) {
     client.on(msgPrefix, function (data) {
       const mappedIO = mapI2O(data)
       console.log('Received message')
-      io.emit('tcMessage', ` has received a message, '${data}', which according to your rules, means it should output '${mappedIO}'`)
+      io.emit('tcMessage', `outputs '${mappedIO}'`)
       io.emit('IR_', mappedIO)
     })
   )
