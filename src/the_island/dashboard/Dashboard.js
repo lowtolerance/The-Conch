@@ -15,6 +15,7 @@ const Header = (props) =>
 const Button = (props) =>
   <button
     type='button'
+    key={props.action.id}
     className='btn btn-outline-primary'
     name={props.action.command}
     onClick={(e) => { props.handler(props.action.command, e) }}>
@@ -33,21 +34,19 @@ const Buttons = (props) => {
 }
 
 const CommandHistory = (props) =>
-  <div className='col-7'>
-    <table className='history table table-sm'>
-      <thead>
-        <tr>
-          <th>Command</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.history.map(command =>
-          <tr key={command}>
-            <td>{command}</td>
-          </tr>)}
-      </tbody>
-    </table>
-  </div>
+  <table className='history table table-sm'>
+    <thead>
+      <tr>
+        <th>Command</th>
+      </tr>
+    </thead>
+    <tbody>
+      {props.history.map(command =>
+        <tr key={command}>
+          <td>{command}</td>
+        </tr>)}
+    </tbody>
+  </table>
 
 class Dashboard extends Component {
   constructor () {
@@ -68,7 +67,6 @@ class Dashboard extends Component {
     let actionsRef = fire.database().ref('actions')
     actionsRef.on('child_added', snapshot => {
       let action = { name: snapshot.val(), command: snapshot.val(), id: snapshot.key }
-      console.log(action.name)
       this.setState({ actions: [action].concat(this.state.actions) })
     })
   }
@@ -88,6 +86,8 @@ class Dashboard extends Component {
               <Buttons
                 actions={this.state.actions}
                 handler={this.handleClick} />
+            </div>
+            <div className='col-7'>
               <CommandHistory history={this.state.history} />
             </div>
           </div>

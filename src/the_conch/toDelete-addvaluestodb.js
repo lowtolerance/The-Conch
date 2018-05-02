@@ -1,18 +1,8 @@
 import fire from './firebaseInitializer'
 
-const actions = [
-  {
-    command: 'A90',
-    name: 'Toggle Power'
-  },
-  {
-    command: '890',
-    name: 'Volume Up'
-  },
-  {
-    command: 'B90',
-    name: 'Volume Down'
-  }
-]
+const actions = {
+  command: 'B90',
+  name: 'Volume Up'
+}
 
-fire.database().ref('actions').push([actions])
+fire.database().ref('actions').push(actions)

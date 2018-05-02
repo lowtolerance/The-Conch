@@ -8,7 +8,7 @@ const availableInputs = {
   }
 }
 
-function initRuleDeclarations (rule) {
+function enactNewRule (rule) {
   const protocol = rule.input.protocol
   console.log(protocol)
   if (availableInputs[protocol] === protocol) {
@@ -20,4 +20,4 @@ function initRuleDeclarations (rule) {
   }
 }
 
-export default initRuleDeclarations
+export default enactNewRule
