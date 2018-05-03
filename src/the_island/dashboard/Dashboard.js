@@ -3,22 +3,7 @@ import client from 'socket.io-client'
 import fire from '../../the_conch/firebaseInitializer'
 import History from './History'
 import Buttons from './Buttons'
-
-const Message = (props) =>
-  <small>
-    {props.message}
-  </small>
-
-const Header = (props) =>
-  <div className='jumbotron'>
-    <div className='container'>
-      <span className='row'>
-        <h1 className='display-4'>The Conch <Message message={props.message}>awakes</Message></h1>
-      </span>
-    </div>
-  </div>
-
-
+import Header from './Header'
 
 class Dashboard extends Component {
   constructor () {
@@ -29,7 +14,7 @@ class Dashboard extends Component {
       actions: []
     }
     this.handleClick = this.handleClick.bind(this)
-    this.socket = client('http://192.168.1.185:3010')
+    this.socket = client('http://localhost:3010')
     this.socket.on('IR_', data => this.setState({ history: [...this.state.history, data] }))
     this.socket.on('tcMessage', data => this.setState({ message: data }))
   }
