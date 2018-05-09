@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import client from 'socket.io-client'
-import fire from '../../the_conch/firebaseInitializer'
 import History from './History'
 import Buttons from './Buttons'
 import Header from './Header'
@@ -21,11 +20,6 @@ class Dashboard extends Component {
 
   componentWillMount () {
     this.setState({ message: ' awaits' })
-    let actionsRef = fire.database().ref('actions')
-    actionsRef.on('child_added', snapshot => {
-      let action = { name: snapshot.val(), command: snapshot.val(), id: snapshot.key }
-      this.setState({ actions: [action].concat(this.state.actions) })
-    })
   }
 
   handleClick (data, e) {

@@ -8,11 +8,11 @@ const availableInputs = {
   }
 }
 
-function enactNewRule (rule) {
+function initializeHandler (rule) {
   const protocol = rule.input.protocol
   console.log(protocol)
   if (availableInputs[protocol] === protocol) {
-    console.log(`Starting ${protocol} listener`)
+    console.log(`Starting ${protocol} listener to satisfy rule '${rule.name}'`)
     const listener = availableInputs.handler.initializer
     listener(availableInputs.handler.prefix)
   } else {
@@ -20,4 +20,4 @@ function enactNewRule (rule) {
   }
 }
 
-export default enactNewRule
+export default initializeHandler

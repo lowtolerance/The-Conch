@@ -1,4 +1,7 @@
+import nedb from 'nedb'
+
 const irPowerToggleToCEC = {
+  name: 'irPowerToggleToCEC',
   input: {
     command: 'TV_POWER_TOGGLE',
     protocol: 'infrared'
@@ -9,4 +12,5 @@ const irPowerToggleToCEC = {
   }
 }
 
-export default irPowerToggleToCEC
+const db = new nedb({filename: 'rules.json', autoload: true})
+db.insert(irPowerToggleToCEC)

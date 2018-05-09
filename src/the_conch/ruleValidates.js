@@ -1,4 +1,6 @@
 import validProperties from '../the_ocean/validProperties'
+import fire from './firebaseInitializer'
+
 function ioPropertiesAreValid (rule) {
   let result = {
     valid: true,
@@ -6,11 +8,11 @@ function ioPropertiesAreValid (rule) {
   }
 
   for (let pathway in validProperties) {
-    if (rule[pathway] === undefined) {
+    if (rule.rule[pathway] === undefined) {
       result.valid = false
       result.errors.push(`Rule does not contain an ${pathway} definition`)
     }
-    for (let property in rule[pathway]) {
+    for (let property in rule.rule[pathway]) {
       if (!validProperties[pathway].hasOwnProperty(property)) {
         result.valid = false
         result.errors.push(`${pathway.charAt(0).toUpperCase() + pathway.slice(1)} property '${property}' is not valid`)
@@ -25,6 +27,9 @@ export default function ruleValidates (rule) {
   if (!result.valid) {
     result.errors.map(error => console.log(`ERROR: ${error}`))
     return false
+  } else {
+    let db = fire.database().ref('rulebook')
+    db.push(rule)
+    return true
   }
-  return true
 }
