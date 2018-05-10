@@ -58,10 +58,8 @@ import http from 'http'
     function initSocketNamespaces (namespace) {
       io.on('connect', connected => {
         connected.emit('tc', 'connected')
-        const infrared = connected.of('/IR')
-        infrared.on('IR', data => {
-          infrared.emit('tc', `outputs ${data}`)
-          infrared.emit(namespace, data)
+        connected.on('IR', data => {
+          connected.emit('tc', data)
         })
       })
     }

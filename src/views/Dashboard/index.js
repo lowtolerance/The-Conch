@@ -38,7 +38,7 @@ class Dashboard extends Component {
   handleClick (data, e) {
     e.preventDefault()
     this.setState({history: [...this.state.history, data]})
-    this.messages.emit('tc', data)
+    this.messages.emit('IR', data)
     this.messages.on('tc', data => console.log(data))
   }
 
