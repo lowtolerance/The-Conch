@@ -1,6 +1,4 @@
-import nedb from 'nedb'
-
-const irPowerToggleToCEC = {
+export const irPowerToggleToCEC = {
   name: 'irPowerToggleToCEC',
   input: {
     command: 'TV_POWER_TOGGLE',
@@ -11,6 +9,3 @@ const irPowerToggleToCEC = {
     protocol: 'hdmi-cec'
   }
 }
-
-const db = new nedb({filename: 'rules.json', autoload: true})
-db.insert(irPowerToggleToCEC)

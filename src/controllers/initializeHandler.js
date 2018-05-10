@@ -1,9 +1,9 @@
-import startSocketServer from './startSocketServer'
+import initSocketNamespaces from './initSocketNamespaces'
 
 const availableInputs = {
   infrared: 'infrared',
   handler: {
-    initializer: startSocketServer,
+    initializer: initSocketNamespaces,
     prefix: 'IR_'
   }
 }

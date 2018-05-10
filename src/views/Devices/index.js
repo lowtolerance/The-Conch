@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import devices from '../../the_ocean/devices'
+import devices from '../../models/devices'
 
 class Devices extends Component {
   constructor (props) {

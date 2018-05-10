@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import client from 'socket.io-client'
 import History from './History'
 import Buttons from './Buttons'
 import Header from './Header'
+const client = require('socket.io-client')
 
 class Dashboard extends Component {
   constructor () {
@@ -10,12 +10,25 @@ class Dashboard extends Component {
     this.state = {
       message: ' awakes',
       history: [],
-      actions: []
+      actions: [
+        {
+          command: 'A90',
+          name: 'Toggle Power'
+        },
+        {
+          command: '890',
+          name: 'Volume Up'
+        },
+        {
+          command: 'B90',
+          name: 'Volume Down'
+        }
+      ]
     }
     this.handleClick = this.handleClick.bind(this)
-    this.socket = client('http://localhost:3010')
-    this.socket.on('IR_', data => this.setState({ history: [...this.state.history, data] }))
-    this.socket.on('tcMessage', data => this.setState({ message: data }))
+    this.messages = client.connect('http://localhost:3010')
+    this.messages.on('IR', data => this.setState({ history: [...this.state.history, data] }))
+    this.messages.on('tc', data => this.setState({ message: data }))
   }
 
   componentWillMount () {
@@ -24,7 +37,9 @@ class Dashboard extends Component {
 
   handleClick (data, e) {
     e.preventDefault()
-    this.socket.emit('IR_', data)
+    this.setState({history: [...this.state.history, data]})
+    this.messages.emit('tc', data)
+    this.messages.on('tc', data => console.log(data))
   }
 
   render () {

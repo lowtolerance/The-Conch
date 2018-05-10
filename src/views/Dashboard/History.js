@@ -1,4 +1,5 @@
 import React from 'react'
+
 const History = (props) =>
   <table className='history table table-sm'>
     <thead>

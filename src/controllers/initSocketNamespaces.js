@@ -1,7 +1,7 @@
-import map from '../the_conch/dbMapUtils'
+import socketIO from 'socket.io'
+import map from './dbMapUtils'
 
-function startSocketServer (msgPrefix) {
-  const io = require('socket.io')()
+function initSocketNamespaces (msgPrefix, io) {
   io.on('connect', client =>
     client.on(msgPrefix, function (data) {
       const mappedIO = map(data)
@@ -9,7 +9,6 @@ function startSocketServer (msgPrefix) {
       io.emit('IR_', mappedIO)
     })
   )
-  io.listen(3010)
 }
 
-export default startSocketServer
+export default initSocketNamespaces

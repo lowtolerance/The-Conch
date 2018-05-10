@@ -1,5 +1,4 @@
 import validProperties from '../the_ocean/validProperties'
-import fire from './firebaseInitializer'
 
 function ioPropertiesAreValid (rule) {
   let result = {
@@ -28,8 +27,8 @@ export default function ruleValidates (rule) {
     result.errors.map(error => console.log(`ERROR: ${error}`))
     return false
   } else {
-    let db = fire.database().ref('rulebook')
-    db.push(rule)
+    // let db = fire.database().ref('rulebook')
+    // db.push(rule)
     return true
   }
 }
