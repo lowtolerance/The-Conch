@@ -59,18 +59,11 @@ import http from 'http'
       io.on('connect', connected => {
         connected.emit('tc', 'connected')
         const infrared = connected.of('/IR')
-        //namespaces[namespace] === undefined
-        //  ? namespaces[namespace] = io.of(`http://localhost:3010/${namespace}`)
-        //  : console.log(`Namespace ${namespace} already exists, reusing.`)
-        //namespaces[namespace].on('connect', client => {
-        //  client.emit('tc', 'knows how to talk infrared')
-        //  client.on(namespace, function (data) {
-        //    const mappedIO = map(data)
         infrared.on('IR', data => {
           infrared.emit('tc', `outputs ${data}`)
           infrared.emit(namespace, data)
         })
-      }
+      })
     }
 
     function initializeHandler (rule) {
