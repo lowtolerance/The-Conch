@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import History from './History'
 import Buttons from './Buttons'
 import Header from './Header'
+import uuidv4 from 'uuid'
+
 const client = require('socket.io-client')
 
 class Dashboard extends Component {
@@ -13,15 +15,18 @@ class Dashboard extends Component {
       actions: [
         {
           command: 'A90',
-          name: 'Toggle Power'
+          name: 'Toggle Power',
+          key: uuidv4()
         },
         {
           command: '890',
-          name: 'Volume Up'
+          name: 'Volume Up',
+          key: uuidv4()
         },
         {
           command: 'B90',
-          name: 'Volume Down'
+          name: 'Volume Down',
+          key: uuidv4()
         }
       ]
     }
