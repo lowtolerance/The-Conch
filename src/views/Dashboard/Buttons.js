@@ -4,7 +4,7 @@ const Button = (props) => {
   return (
     <button
       type='button'
-      key={props.action.command}
+      key={props.action.key}
       name={props.action.name}
       className='btn btn-outline-primary'
       onClick={(e) => { props.handler(props.action.command, e) }}>
