@@ -1,5 +1,5 @@
 import socketIO from 'socket.io'
-import map from './dbMapUtils'
+import map from '../utils'
 
 function initSocketNamespaces (msgPrefix, io) {
   io.on('connect', client =>

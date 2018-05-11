@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import History from './History'
 import Buttons from './Buttons'
 import Header from './Header'
-import map from '../../controllers/dbMapUtils'
+import { map } from '../../utils'
 import uuidv4 from 'uuid'
 
 const client = require('socket.io-client')

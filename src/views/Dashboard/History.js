@@ -1,5 +1,6 @@
 import React from 'react'
-import map from '../../controllers/dbMapUtils'
+import { map } from '../../utils'
+
 const History = (props) =>
   <table className='history table table-sm'>
     <thead>

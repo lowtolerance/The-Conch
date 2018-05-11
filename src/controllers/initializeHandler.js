@@ -1,4 +1,4 @@
-import map from './dbMapUtils'
+import { map } from '../utils'
 const io = require('socket.io')(3010)
 
 const listener = {
@@ -14,7 +14,6 @@ function initSocket () {
   io.on('connect', connected => {
     connected.emit('tc', 'connected')
     connected.on('IR', data => {
-      console.log(map(data))
       connected.volatile.emit('tc', map(data))
     })
   })
