@@ -1,22 +1,31 @@
-import initSocketNamespaces from './initSocketNamespaces'
+import map from './dbMapUtils'
+const io = require('socket.io')(3010)
 
-const availableInputs = {
-  infrared: 'infrared',
+const listener = {
+  name: 'IR Event Receiver',
+  handles: 'infrared',
   handler: {
-    initializer: initSocketNamespaces,
-    prefix: 'IR_'
+    initializer: initSocket,
+    prefix: 'IR'
   }
 }
 
+function initSocket () {
+  io.on('connect', connected => {
+    connected.emit('tc', 'connected')
+    connected.on('IR', data => {
+      console.log(map(data))
+      connected.volatile.emit('tc', map(data))
+    })
+  })
+}
+
 function initializeHandler (rule) {
-  const protocol = rule.input.protocol
-  console.log(protocol)
-  if (availableInputs[protocol] === protocol) {
-    console.log(`Starting ${protocol} listener to satisfy rule '${rule.name}'`)
-    const listener = availableInputs.handler.initializer
-    listener(availableInputs.handler.prefix)
+  if (listener.handles === rule.input.protocol) {
+    console.log(`Starting ${listener.name} listener to satisfy rule '${rule.name}'`)
+    listener.handler.initializer(listener.handler.prefix)
   } else {
-    console.log(`No valid handler found for protocol '${protocol}'`)
+    console.log(`No valid handler found for protocol '${rule.input.protocol}'`)
   }
 }
 

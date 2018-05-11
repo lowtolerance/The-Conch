@@ -11,14 +11,19 @@ const commandTable = {
           value: 'TV_POWER_TOGGLE'
         }
       },
-      '890': function () {
+      '490': function () {
         return {
           value: 'TV_VOLUME_UP'
         }
       },
-      'B90': function () {
+      'C90': function () {
         return {
           value: 'TV_VOLUME_DOWN'
+        }
+      },
+      'D10': function () {
+        return {
+          value: 'TV_ENTER'
         }
       },
       default: function () {
@@ -44,6 +49,11 @@ const commandTable = {
       'TV_VOLUME_DOWN': function () {
         return {
           value: '45ab6e'
+        }
+      },
+      'TV_ENTER': function () {
+        return {
+          value: '7e54ea'
         }
       },
       default: function () {

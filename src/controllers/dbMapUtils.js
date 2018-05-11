@@ -1,8 +1,13 @@
-//const _mapI2U = command => {}
+import commandTable from '../models/commandTable'
 
-//const _mapU2O = command => {}
+const _mapI2U = command => {
+  return commandTable.input(command).value
+}
 
-//const map = command => _mapU2O(_mapI2U(command))
+const _mapU2O = command => {
+  return commandTable.output(command).value
+}
 
-const map = command => 'TV_POWER_TOGGLE'
+const map = command => _mapU2O(_mapI2U(command))
+
 export default map

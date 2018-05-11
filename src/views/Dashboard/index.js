@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import History from './History'
 import Buttons from './Buttons'
 import Header from './Header'
+import map from '../../controllers/dbMapUtils'
 const client = require('socket.io-client')
 
 class Dashboard extends Component {
@@ -16,18 +17,22 @@ class Dashboard extends Component {
           name: 'Toggle Power'
         },
         {
-          command: '890',
+          command: '490',
           name: 'Volume Up'
         },
         {
-          command: 'B90',
+          command: 'C90',
           name: 'Volume Down'
+        },
+        {
+          command: 'D10',
+          name: 'Enter'
         }
       ]
     }
     this.handleClick = this.handleClick.bind(this)
     this.messages = client.connect('http://localhost:3010')
-    this.messages.on('IR', data => this.setState({ history: [...this.state.history, data] }))
+    this.messages.on('IR', data => this.setState({ history: [...this.state.history, `${data} -> ${map(data)}`] }))
     this.messages.on('tc', data => this.setState({ message: data }))
   }
 

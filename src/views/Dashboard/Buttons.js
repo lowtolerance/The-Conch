@@ -7,7 +7,7 @@ const Button = (props) => {
       key={props.action.command}
       name={props.action.name}
       className='btn btn-outline-primary'
-      onClick={(e) => {props.handler(props.action.command, e) }}>
+      onClick={(e) => { props.handler(props.action.command, e) }}>
       {props.action.name}
     </button>
   )
