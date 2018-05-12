@@ -1,4 +1,4 @@
-import validProperties from '../the_ocean/validProperties'
+import validProperties from '../controllers/validProperties'
 
 function ioPropertiesAreValid (rule) {
   let result = {
