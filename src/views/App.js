@@ -13,9 +13,7 @@ class App extends Component {
   }
 
   handleClick (e) {
-    const visible = !this.state.devices.visible
-
-    this.setState({devices: {visible: visible}})
+    this.setState({devices: {visible: !this.state.devices.visible}})
   }
 
   render () {
