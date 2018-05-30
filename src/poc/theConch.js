@@ -1,9 +1,11 @@
 const emitEvent = require('./actions.js')
+
 class TheConch {
   constructor (openSocket) {
     this.eventQueue = []
     openSocket.on('connect', connected => {
       connected.on('IR', data => {
+        console.time()
         console.log(`Caught signal '${data}'`)
         this.enqueue(data)
         this.runout()
@@ -76,6 +78,7 @@ class TheConch {
       const event = this.dequeue()
       this.lookup(event)
     }
+    console.timeEnd()
   }
 }
 
