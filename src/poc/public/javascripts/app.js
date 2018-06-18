@@ -100,6 +100,7 @@ const store = createStore(reducer);
 document.addEventListener('click', function (event) {
   switch (event.target.id) {
     case ('power_toggle'):
+      socket.emit('IR', 'POWER_TOGGLE')
       store.dispatch({type: 'POWER_TOGGLE'});
       break
     case ('volume_up'):
