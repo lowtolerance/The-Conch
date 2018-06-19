@@ -13,7 +13,7 @@ function runout () {
 function theConch (openSocket) {
   global.eventQueue = []
   openSocket.on('connect', connected => {
-    connected.on('IR', data => {
+    connected.on('TC', data => {
       console.time()
       console.log(`Caught signal '${data}'`)
       enqueue(data)

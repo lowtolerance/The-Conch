@@ -9,11 +9,11 @@ function lookup (event) {
       break
     case 'POWER_TOGGLE':
       console.log(`'POWER_TOGGLE' event returns function emitEvent, with payload of '4c3aef'`)
-      dispatch(function () { emitEvent('IR', '43ecaf') })
+      dispatch(function () { emitEvent('TC', '43ecaf') })
       break
     case 'VOLUME_UP':
       console.log(`VOLUME_UP event returns function emitEvent, with payload '4ea312'`)
-      dispatch(function () { emitEvent('IR', '4ea312') })
+      dispatch(function () { emitEvent('TC', '4ea312') })
       break
     case '43ecaf':
       console.log('Outputting array of commands')
