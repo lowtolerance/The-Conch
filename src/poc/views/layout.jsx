@@ -10,7 +10,7 @@ class Layout extends React.Component {
           <link rel='stylesheet' href='stylesheets/circle.css' />
         </head>
         <body>{this.props.children}</body>
-        <script type='text/javascript' src='/socket.io/socket.io.js'/>
+        <script type='text/javascript' src='/socket.io/socket.io.js' />
         <script src='javascripts/app.js' />
       </html>
     )
