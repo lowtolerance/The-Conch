@@ -23,9 +23,9 @@ http.listen(3000, function () {
 })
 
 io.on('connect', function (socket) {
-  socket.emit('IR', 'READY')
-  socket.on('IR', function (data) {
+  socket.on('TC', function (data) {
     console.log(data)
   })
+  socket.emit('TC', 'READY')
 })
 module.exports = app
