@@ -1,3 +1,4 @@
+// Updates our readiness indicator everytime our state changes.
 const readyMonitor = (store) => {
   const ready = document.getElementById('percentage')
   if (store.getState().ready) ready.classList.remove('invisible')

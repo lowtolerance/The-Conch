@@ -1,4 +1,16 @@
 const enqueue = require('./utils/enqueue')
+
+// Takes the result from our lookup and
+// and takes the appropriate action.
+// Results will be either a string, an
+// array (or other iterable Object) of strings,
+// a function or undefined
+// String-based results get placed into our event queue,
+// continuing the chain of lookups.
+// Function-based results get executed, terminating
+// the chain of lookup. undefined results also terminate
+// the chain, outputting an error.
+
 function dispatch (result) {
   switch (typeof result) {
     case 'string':

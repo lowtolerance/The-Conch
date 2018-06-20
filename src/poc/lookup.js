@@ -1,6 +1,15 @@
 const emitEvent = require('./actions.js')
 const dispatch = require('./dispatch')
 
+// Takes an event (as a string) and sends
+// either a string, an array or a function
+// to our dispatcher.
+
+// NOTE: This function is to be considered
+// a temporary placeholder for a function that
+// will look up the passed in event in a small
+// in-memory database and return the result to
+// be dispatched
 function lookup (event) {
   switch (event) {
     case 'A90:SONY:12':

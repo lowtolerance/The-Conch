@@ -1,3 +1,5 @@
+// Updates percentage on our volume indicator
+// whenever our state changes
 import {volumePercentage} from '../utils/utils'
 
 const percentageUpdater = (store) => {
