@@ -38,9 +38,14 @@ const reducer = (state = getInitialState(), action) => {
   }
 };
 
+// Just a generic logger.
+// Logs our state object to the console every time it changes
+
 const logger = (store) => {
   console.log(store.getState());
 };
+
+// Updates percentage on our volume indicator
 
 const percentageUpdater = (store) => {
   const percentage = document.getElementById('percentage');
@@ -50,11 +55,14 @@ const percentageUpdater = (store) => {
   percentage.classList.add(volumePercentage(store.getState().volume, store.getState().config.maxVolume));
 };
 
+// Updates our power status indicator whenever the
+// state changes.
 const powerUpdater = (store) => {
   const power = document.getElementById('power');
   power.innerHTML = (store.getState().power) ? 'On' : 'Standby';
 };
 
+// Updates our readiness indicator everytime our state changes.
 const readyMonitor = (store) => {
   const ready = document.getElementById('percentage');
   if (store.getState().ready) ready.classList.remove('invisible');

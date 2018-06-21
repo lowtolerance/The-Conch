@@ -24,6 +24,7 @@ function theConch (openSocket) {
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
     connected.on('TC', data => {
+      connected.emit('READY')
       console.time() // Start timer
       console.log(`Caught signal '${data}'`)
       enqueue(data) // Add socket message payload to event queue

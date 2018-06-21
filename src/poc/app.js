@@ -22,10 +22,4 @@ http.listen(3000, function () {
   console.log('listening on *:3000')
 })
 
-io.on('connect', function (socket) {
-  socket.on('TC', function (data) {
-    console.log(data)
-  })
-  socket.emit('TC', 'READY')
-})
 module.exports = app
