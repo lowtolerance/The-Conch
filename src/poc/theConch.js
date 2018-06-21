@@ -5,11 +5,63 @@ const lookup = require('./lookup')
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
 // different strategy if the need arises.
+const config = {
+  maxVolume: 12
+}
+
+const getVolumeStatus = () => 0
+const getPowerStatus = () => false
+const getConfig = () => config
+const getInitialState = () => (
+  {
+    volume: getVolumeStatus(),
+    power: getPowerStatus(),
+    config: getConfig(),
+    ready: false
+  }
+)
+const reducer = (state = getInitialState(), action) => {
+  switch (action.type) {
+    case 'READY':
+      return {...state, ready: true}
+    case 'POWER_TOGGLE':
+      return {...state, power: !state.power}
+    case 'VOLUME_UP':
+      if (state.volume < state.config.maxVolume) {
+        return {...state, volume: state.volume + 1}
+      } else return state
+    case 'VOLUME_DOWN':
+      if (state.volume > 0) {
+        return {...state, volume: state.volume - 1}
+      } else return state
+    default:
+      return state
+  }
+}
+const createStore = (reducer) => {
+  let store = {}
+  store.state = getInitialState()
+  store.listeners = []
+  store.getState = () => store.state
+  store.subscribe = (handler) => store.listeners.push(handler)
+  store.dispatch = (action) => {
+    store.state = reducer(store.state, action)
+    store.listeners.forEach(listener => listener(store))
+  }
+  store.dispatch({})
+  return store
+}
+
+const serverStore = createStore(reducer)
+serverStore.subscribe((store) => {
+  console.log(store.getState())
+  global.socket.emit('restate', store.getState())
+})
 
 function runout () {
   while (this.eventQueue.length !== 0) {
     const event = dequeue() // Get event
-    lookup(event) // Act accordingly
+    lookup(event, serverStore) // Act accordingly
   }
   console.timeEnd() // end timer. prints time from start to finish upon receiving an event.
 }
@@ -23,6 +75,8 @@ function runout () {
 function theConch (openSocket) {
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
+    global.socket = connected
+    serverStore.dispatch({type: 'READY'})
     connected.on('TC', data => {
       connected.emit('READY')
       console.time() // Start timer

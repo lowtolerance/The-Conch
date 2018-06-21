@@ -1,5 +1,5 @@
 const config = {
-  maxVolume: 15
+  maxVolume: 12
 }
 
 export default config
