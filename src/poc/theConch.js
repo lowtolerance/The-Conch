@@ -1,6 +1,8 @@
 const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
+// const CEC = require('@damoclark/cec-monitor').CEC
+const CECMonitor = require('@damoclark/cec-monitor').CECMonitor
 
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
@@ -71,11 +73,12 @@ function runout () {
 // socket logic in general is likely
 // a mess and is certain to change
 // drastically
-
+let open = false
 function theConch (openSocket) {
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
     global.socket = connected
+    open = true
     serverStore.dispatch({type: 'READY'})
     connected.on('TC', data => {
       connected.emit('READY')
@@ -87,4 +90,21 @@ function theConch (openSocket) {
   })
 }
 
+let monitor = new CECMonitor('The Conch',
+  {
+    debug: false,
+    hdmiport: 1,
+    processManaged: false,
+    recorder: true,
+    autorestart: true
+  }
+)
+
+monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
+  function (packet) {
+    if (open) { global.socket.emit('TC', 'POWER_TOGGLE') }
+    console.log('POWER STATUS CODE:', packet.data.val)
+    console.log('POWER STATUS:', packet.data.str)
+  }
+)
 module.exports = theConch

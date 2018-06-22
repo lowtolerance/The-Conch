@@ -1,4 +1,5 @@
 /* eslint-env browser */
+/* global io:true */
 import reducer from './predux/reducer'
 import createStore from './predux/createStore'
 
@@ -19,6 +20,7 @@ document.addEventListener('click', function (event) {
 })
 
 const ws = io()
+
 ws.on('connect', function () {
   console.log('connected')
 })
