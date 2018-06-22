@@ -11,6 +11,16 @@ const config = {
   maxVolume: 12
 }
 
+let monitor = new CECMonitor('The Conch',
+  {
+    debug: false,
+    hdmiport: 1,
+    processManaged: false,
+    recorder: true,
+    autorestart: true
+  }
+)
+
 const getVolumeStatus = () => 0
 const getPowerStatus = () => false
 const getConfig = () => config
@@ -73,7 +83,6 @@ function runout () {
 // socket logic in general is likely
 // a mess and is certain to change
 // drastically
-let open = false
 function theConch (openSocket) {
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
@@ -94,16 +103,5 @@ function theConch (openSocket) {
     })
   })
 }
-
-let monitor = new CECMonitor('The Conch',
-  {
-    debug: false,
-    hdmiport: 1,
-    processManaged: false,
-    recorder: true,
-    autorestart: true
-  }
-)
-
 
 module.exports = theConch
