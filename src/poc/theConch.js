@@ -69,7 +69,23 @@ serverStore.subscribe((store) => {
   console.log(store.getState())
   global.socket.emit('restate', store.getState())
 })
-
+serverStore.subscribe((store) => {
+  monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
+    function (packet) {
+      console.log(packet.data.str)
+      switch (packet.data.str) {
+        case 'STANDBY':
+          if (store.getState().power) store.dispatch({type: 'POWER_TOGGLE'})
+          break
+        case 'ON':
+          if (!store.getState().power) store.dispatch({type: 'POWER_TOGGLE'})
+          break
+        case 'IN_TRANSITION_STANDBY_TO_ON':
+          if (!store.getState().power) store.dispatch({type: 'POWER_TOGGLE'})
+      }
+    }
+  )
+})
 function runout () {
   while (this.eventQueue.length !== 0) {
     const event = dequeue() // Get event
@@ -87,19 +103,6 @@ function theConch (openSocket) {
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
     global.socket = connected
-    monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
-      function (packet) {
-        console.log(packet.data.str)
-        switch (packet.data.str) {
-          case 'STANDBY':
-            if (serverStore.getState.power) serverStore.dispatch({type: 'POWER_TOGGLE'})
-            break
-          case 'ON':
-            if (!serverStore.getState.power) serverStore.dispatch({type: 'POWER_TOGGLE'})
-            break
-        }
-      }
-    )
     serverStore.dispatch({type: 'READY'})
     connected.on('TC', data => {
       console.time() // Start timer
