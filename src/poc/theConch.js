@@ -82,6 +82,13 @@ function theConch (openSocket) {
     connected.on('TC', data => {
       console.time() // Start timer
       console.log(`Caught signal '${data}'`)
+      monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
+        function (packet) {
+          connected.emit('TC', 'POWER_TOGGLE')
+          console.log('POWER STATUS CODE:', packet.data.val)
+          console.log('POWER STATUS:', packet.data.str)
+        }
+      )
       enqueue(data) // Add socket message payload to event queue
       runout() // Run out our queue.
     })
@@ -98,11 +105,5 @@ let monitor = new CECMonitor('The Conch',
   }
 )
 
-monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
-  function (packet) {
-    global.socket.emit('TC', 'POWER_TOGGLE')
-    console.log('POWER STATUS CODE:', packet.data.val)
-    console.log('POWER STATUS:', packet.data.str)
-  }
-)
+
 module.exports = theConch
