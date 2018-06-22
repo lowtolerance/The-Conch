@@ -89,10 +89,14 @@ function theConch (openSocket) {
     global.socket = connected
     monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
       function (packet) {
-        if (
-          ((packet.data.str === 'STANDBY') && (serverStore.getState().power === false)) ||
-          ((packet.data.str === 'ON') && (serverStore.getState().power === true))
-        ) { serverStore.dispatch({type: 'POWER_TOGGLE'}) }
+        switch (packet.data.str) {
+          case 'STANDBY':
+            if (serverStore.getState.power) serverStore.dispatch({type: 'POWER_TOGGLE'})
+            break
+          case 'ON':
+            if (!serverStore.getState.power) serverStore.dispatch({type: 'POWER_TOGGLE'})
+            break
+        }
       }
     )
     serverStore.dispatch({type: 'READY'})
