@@ -2,7 +2,7 @@ const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
 // const CEC = require('@damoclark/cec-monitor').CEC
-const CECMonitor = require('@damoclark/cec-monitor').CECMonitor
+const CECMonitor = require('@senzil/cec-monitor').CECMonitor
 
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
