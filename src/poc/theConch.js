@@ -87,17 +87,16 @@ function theConch (openSocket) {
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
     global.socket = connected
+    monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
+      function (packet) {
+        serverStore.dispatch({type: 'POWER_TOGGLE'})
+        console.log('Power status:', packet.data.str)
+      }
+    )
     serverStore.dispatch({type: 'READY'})
     connected.on('TC', data => {
       console.time() // Start timer
       console.log(`Caught signal '${data}'`)
-      monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
-        function (packet) {
-          serverStore.dispatch({type: 'POWER_TOGGLE'})
-          console.log('POWER STATUS CODE:', packet.data.val)
-          console.log('POWER STATUS:', packet.data.str)
-        }
-      )
       enqueue(data) // Add socket message payload to event queue
       runout() // Run out our queue.
     })
