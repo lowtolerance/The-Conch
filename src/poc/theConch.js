@@ -78,10 +78,8 @@ function theConch (openSocket) {
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
     global.socket = connected
-    open = true
     serverStore.dispatch({type: 'READY'})
     connected.on('TC', data => {
-      connected.emit('READY')
       console.time() // Start timer
       console.log(`Caught signal '${data}'`)
       enqueue(data) // Add socket message payload to event queue
@@ -102,7 +100,7 @@ let monitor = new CECMonitor('The Conch',
 
 monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
   function (packet) {
-    if (open) { global.socket.emit('TC', 'POWER_TOGGLE') }
+    global.socket.emit('TC', 'POWER_TOGGLE')
     console.log('POWER STATUS CODE:', packet.data.val)
     console.log('POWER STATUS:', packet.data.str)
   }
