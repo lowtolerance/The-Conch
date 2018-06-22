@@ -71,8 +71,18 @@ serverStore.subscribe((store) => {
   global.socket.emit('restate', store.getState())
 })
 serverStore.subscribe((store) => {
-  if (store.getState().power) exec('echo on 0 | cec-client RPI -s -d 1')
-  if (!store.getState().power) exec('echo standby 0 | cec-client RPI -s -d 1')
+  if (store.getState().power) {
+    exec('echo on 0 | cec-client RPI -s -d 1',
+      (err, stdout, stderr) => {
+        if (err) { return undefined }
+      })
+  }
+  if (!store.getState().power) {
+    exec('echo standby 0 | cec-client RPI -s -d 1',
+      (err, stdout, stderr) => {
+        if (err) { return undefined }
+      })
+  }
 })
 function runout () {
   while (this.eventQueue.length !== 0) {
