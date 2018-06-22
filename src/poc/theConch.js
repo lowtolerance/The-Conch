@@ -3,6 +3,7 @@ const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
 // const CEC = require('@damoclark/cec-monitor').CEC
 const CECMonitor = require('@senzil/cec-monitor').CECMonitor
+const { exec } = require('child_process')
 
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
@@ -69,7 +70,10 @@ serverStore.subscribe((store) => {
   console.log(store.getState())
   global.socket.emit('restate', store.getState())
 })
-
+serverStore.subscribe((store) => {
+  if (store.getState().power) exec('echo on 0 | cec-client RPI -s -d 1')
+  if (!store.getState().power) exec('echo standby 0 | cec-client RPI -s -d 1')
+})
 function runout () {
   while (this.eventQueue.length !== 0) {
     const event = dequeue() // Get event
@@ -84,25 +88,25 @@ function runout () {
 // a mess and is certain to change
 // drastically
 function theConch (openSocket) {
+  monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
+    function (packet) {
+      console.log(packet.data.str)
+      switch (packet.data.str) {
+        case 'STANDBY':
+          if (serverStore.getState().power) serverStore.dispatch({type: 'POWER_TOGGLE'})
+          break
+        case 'ON':
+          if (!serverStore.getState().power) serverStore.dispatch({type: 'POWER_TOGGLE'})
+          break
+        case 'IN_TRANSITION_STANDBY_TO_ON':
+          if (!serverStore.getState().power) serverStore.dispatch({type: 'POWER_TOGGLE'})
+      }
+    }
+  )
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
     global.socket = connected
     serverStore.dispatch({type: 'READY'})
-    monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
-      function (packet) {
-        console.log(packet.data.str)
-        switch (packet.data.str) {
-          case 'STANDBY':
-            if (serverStore.getState().power) serverStore.dispatch({type: 'POWER_TOGGLE'})
-            break
-          case 'ON':
-            if (!serverStore.getState().power) serverStore.dispatch({type: 'POWER_TOGGLE'})
-            break
-          case 'IN_TRANSITION_STANDBY_TO_ON':
-            if (!serverStore.getState().power) serverStore.dispatch({type: 'POWER_TOGGLE'})
-        }
-      }
-    )
     connected.on('TC', data => {
       console.time() // Start timer
       console.log(`Caught signal '${data}'`)
