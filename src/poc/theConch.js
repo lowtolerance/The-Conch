@@ -3,8 +3,20 @@ const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
 // const CEC = require('@damoclark/cec-monitor').CEC
 const CECMonitor = require('@senzil/cec-monitor').CECMonitor
-const { exec } = require('child_process')
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 
+async function poweron () {
+  const {stdout, stderr} = await exec('echo on 0 | cec-client RPI -s -d 1')
+  console.log(stdout)
+  console.log(stderr)
+}
+
+async function poweroff () {
+  const {stdout, stderr} = await exec('echo standby 0 | cec-client RPI -s -d 1')
+  console.log(stdout)
+  console.log(stderr)
+}
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
 // different strategy if the need arises.
@@ -71,18 +83,8 @@ serverStore.subscribe((store) => {
   global.socket.emit('restate', store.getState())
 })
 serverStore.subscribe((store) => {
-  if (store.getState().power) {
-    exec('echo on 0 | cec-client RPI -s -d 1',
-      (err, stdout, stderr) => {
-        if (err) { return undefined }
-      })
-  }
-  if (!store.getState().power) {
-    exec('echo standby 0 | cec-client RPI -s -d 1',
-      (err, stdout, stderr) => {
-        if (err) { return undefined }
-      })
-  }
+  if (store.getState().power) poweron()
+  if (!store.getState().power) poweroff()
 })
 function runout () {
   while (this.eventQueue.length !== 0) {
