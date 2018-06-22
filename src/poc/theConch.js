@@ -93,7 +93,7 @@ function theConch (openSocket) {
       console.log(`Caught signal '${data}'`)
       monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
         function (packet) {
-          connected.emit('TC', 'POWER_TOGGLE')
+          serverStore.dispatch({type: 'POWER_TOGGLE'})
           console.log('POWER STATUS CODE:', packet.data.val)
           console.log('POWER STATUS:', packet.data.str)
         }
