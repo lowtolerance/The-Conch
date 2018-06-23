@@ -1,21 +1,15 @@
 const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
-// const CEC = require('@damoclark/cec-monitor').CEC
 const CECMonitor = require('@senzil/cec-monitor').CECMonitor
-const util = require('util')
-const exec = util.promisify(require('child_process').exec)
+const exec = require('child_process').execSync
 
-async function poweron () {
-  const {stdout, stderr} = await exec('echo on 0 | cec-client RPI -s -d 1')
-  console.log(stdout)
-  console.log(stderr)
+function poweron () {
+  exec('echo on 0 | cec-client RPI -s -d 1')
 }
 
-async function poweroff () {
-  const {stdout, stderr} = await exec('echo standby 0 | cec-client RPI -s -d 1')
-  console.log(stdout)
-  console.log(stderr)
+function poweroff () {
+  exec('echo standby 0 | cec-client RPI -s -d 1')
 }
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
