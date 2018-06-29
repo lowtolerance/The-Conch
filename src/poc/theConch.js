@@ -1,50 +1,8 @@
 const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
+const power = require('./utils/power')
 // const CECMonitor = require('@senzil/cec-monitor').CECMonitor
-const util = require('util')
-const exec = util.promisify(require('child_process').exec)
-
-async function poweron () {
-  const { stdout, stderr } = await exec(
-    'echo on 0 | cec-client RPI -s -d 1'
-  )
-  if (stderr) {
-    console.log(stderr)
-  }
-  console.log(stdout)
-}
-
-async function poweroff () {
-  const { stdout, stderr } = await exec(
-    'echo standby 0 | cec-client RPI -s -d 1'
-  )
-  if (stderr) {
-    console.log(stderr)
-  }
-  console.log(stdout)
-}
-
-async function powertoggle () {
-  const power = await getPowerStatus()
-  if (power) {
-    poweroff()
-  } else poweron()
-}
-async function getPowerStatus () {
-  const { stdout, stderr } = await exec(
-    'echo pow 0 | cec-client RPI -s -d 1'
-  )
-  if (stderr) {
-    console.log(stderr)
-  }
-  if (stdout.includes('standby')) {
-    return false
-  } else if (stdout.includes('on')) {
-    return true
-  }
-  console.log(stdout)
-}
 
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
@@ -69,7 +27,7 @@ const getConfig = () => config
 const getInitialState = () => (
   {
     volume: getVolumeStatus(),
-    power: getPowerStatus(),
+    power: power.getStatus(),
     config: getConfig(),
     ready: false
   }
@@ -112,7 +70,7 @@ serverStore.subscribe((store) => {
   global.socket.emit('restate', store.getState())
 })
 serverStore.subscribe((store) => {
-  if (store.getState().power !== getPowerStatus()) powertoggle()
+  if (store.getState().power !== power.getStatus()) power.toggle()
 })
 function runout () {
   while (this.eventQueue.length !== 0) {
