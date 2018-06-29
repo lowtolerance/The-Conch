@@ -21,13 +21,13 @@ async function off () {
   console.log(stdout)
 }
 
-export async function toggle () {
+async function toggle () {
   const power = await getStatus()
   if (power) {
     off()
   } else on()
 }
-export async function getStatus () {
+async function getStatus () {
   const { stdout, stderr } = await exec(
     'echo pow 0 | cec-client RPI -s -d 1'
   )
@@ -41,3 +41,6 @@ export async function getStatus () {
   }
   console.log(stdout)
 }
+
+module.exports = getStatus
+module.exports = toggle
