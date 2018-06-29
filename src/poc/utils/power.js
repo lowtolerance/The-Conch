@@ -1,7 +1,7 @@
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 
-export async function on () {
+async function on () {
   const { stdout, stderr } = await exec(
     'echo on 0 | cec-client RPI -s -d 1'
   )
@@ -11,7 +11,7 @@ export async function on () {
   console.log(stdout)
 }
 
-export async function off () {
+async function off () {
   const { stdout, stderr } = await exec(
     'echo standby 0 | cec-client RPI -s -d 1'
   )
