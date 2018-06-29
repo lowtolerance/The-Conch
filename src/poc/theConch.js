@@ -2,7 +2,7 @@ const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
 const CECMonitor = require('@senzil/cec-monitor').CECMonitor
-const exec = require('child_process').execSync
+const exec = require('child_process').exec
 
 const poweron = () => {
   exec('echo on 0 | cec-client RPI -s -d 1')
@@ -12,18 +12,20 @@ const poweroff = () => {
   exec('echo standby 0 | cec-client RPI -s -d 1')
 }
 
-async function getPowerStatus () {
-  const value = await exec(
+const getPowerStatus = () => {
+  exec(
     'echo pow 0 | cec-client RPI -s -d 1',
-    function (error, stdout, stderr) {
-      if (error) {
-        console.log(error)
-        return
+    (e, stdout, stderr) => {
+      if (e instanceof Error) {
+        console.error(e)
+        throw e
       }
       console.log(stdout)
       console.log(stderr)
-    })
+    }
+  )
 }
+
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
 // different strategy if the need arises.
