@@ -12,18 +12,20 @@ const poweroff = () => {
   exec('echo standby 0 | cec-client RPI -s -d 1')
 }
 
-function getPowerStatus () {
-  const powerState = exec(
+const getPowerStatus = () => {
+  exec(
     'echo pow 0 | cec-client RPI -s -d 1',
-    (error, stdout) => {
-      if (error) {
-        console.error(`exec error: ${error}`)
-        return
+    (e, stdout, stderr) => {
+      if (e instanceof Error) {
+        console.error(e)
+        throw e
       }
-      console.log(`stdout: ${stdout}`)
+      console.log(stdout)
+      console.log(stderr)
     }
   )
 }
+
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
 // different strategy if the need arises.
