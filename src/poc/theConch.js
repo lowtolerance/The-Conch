@@ -21,7 +21,11 @@ async function getPowerStatus () {
   if (stderr) {
     console.log(stderr)
   }
+  if (stdout.includes('standby')) {
+    return false
+  }
   console.log(stdout)
+  return true
 }
 
 // Iterate through our event queue until no events
