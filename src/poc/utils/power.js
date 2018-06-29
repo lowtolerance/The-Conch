@@ -42,4 +42,4 @@ const power = {
     console.log(stdout)
   }
 }
-export default power
+module.exports = power
