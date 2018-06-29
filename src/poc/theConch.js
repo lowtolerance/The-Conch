@@ -15,7 +15,7 @@ const poweroff = () => {
 
 async function getPowerStatus () {
   const { stdout, stderr } = await exec(
-    'echo pow 0 | cec-client RPI -s -d 1',
+    'echo pow 0 | cec-client RPI -s -d 1'
   )
 
   if (stderr) {
@@ -31,7 +31,7 @@ const config = {
   maxVolume: 12
 }
 
-let monitor = new CECMonitor('The Conch',
+/* let monitor = new CECMonitor('The Conch',
   {
     debug: false,
     hdmiport: 1,
@@ -39,7 +39,7 @@ let monitor = new CECMonitor('The Conch',
     recorder: true,
     autorestart: true
   }
-)
+) */
 
 const getVolumeStatus = () => 0
 // const getPowerStatus = () => false
@@ -107,7 +107,7 @@ function runout () {
 // a mess and is almost certain to change
 // drastically.
 function theConch (openSocket) {
-  monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
+  /* monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
     function (packet) {
       console.log(packet.data.str)
       switch (packet.data.str) {
@@ -121,7 +121,7 @@ function theConch (openSocket) {
           if (!serverStore.getState().power) serverStore.dispatch({type: 'POWER_TOGGLE'})
       }
     }
-  )
+  ) */
   global.eventQueue = [] // Init queue
   openSocket.on('connect', connected => {
     global.socket = connected
