@@ -1,7 +1,7 @@
 const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
-const CECMonitor = require('@senzil/cec-monitor').CECMonitor
+//const CECMonitor = require('@senzil/cec-monitor').CECMonitor
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 
@@ -9,7 +9,6 @@ async function poweron () {
   const { stdout, stderr } = await exec(
     'echo on 0 | cec-client RPI -s -d 1'
   )
-
   if (stderr) {
     console.log(stderr)
   }
@@ -20,18 +19,22 @@ async function poweroff () {
   const { stdout, stderr } = await exec(
     'echo standby 0 | cec-client RPI -s -d 1'
   )
-
   if (stderr) {
     console.log(stderr)
   }
   console.log(stdout)
 }
 
+async function powertoggle () {
+  const power = await getPowerStatus()
+  if (power) {
+    poweroff()
+  } else poweron()
+}
 async function getPowerStatus () {
   const { stdout, stderr } = await exec(
     'echo pow 0 | cec-client RPI -s -d 1'
   )
-
   if (stderr) {
     console.log(stderr)
   }
@@ -109,8 +112,7 @@ serverStore.subscribe((store) => {
   global.socket.emit('restate', store.getState())
 })
 serverStore.subscribe((store) => {
-  if (store.getState().power) poweron()
-  if (!store.getState().power) poweroff()
+  if (store.getState().power !== getPowerStatus()) powertoggle()
 })
 function runout () {
   while (this.eventQueue.length !== 0) {
@@ -148,7 +150,6 @@ function theConch (openSocket) {
     connected.on('TC', data => {
       console.time() // Start timer
       console.log(`Caught signal '${data}'`)
-      getPowerStatus()
       enqueue(data) // Add socket message payload to event queue
       runout() // Run out our queue.
     })
