@@ -15,13 +15,13 @@ const poweroff = () => {
 async function getPowerStatus () {
   const value = await exec(
     'echo pow 0 | cec-client RPI -s -d 1',
-    (error, stdout, stderr) => {
+    function (error, stdout, stderr) {
       if (error) {
         console.log(error)
         return
       }
       console.log(stdout)
-      return stdout
+      console.log(stderr)
     })
 }
 // Iterate through our event queue until no events
