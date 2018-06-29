@@ -4,12 +4,25 @@ const lookup = require('./lookup')
 const CECMonitor = require('@senzil/cec-monitor').CECMonitor
 const exec = require('child_process').execSync
 
-function poweron () {
+const poweron = () => {
   exec('echo on 0 | cec-client RPI -s -d 1')
 }
 
-function poweroff () {
+const poweroff = () => {
   exec('echo standby 0 | cec-client RPI -s -d 1')
+}
+
+async function getPowerStatus () {
+  const value = await exec(
+    'echo pow 0 | cec-client RPI -s -d 1',
+    (error, stdout, stderr) => {
+      if (error) {
+        console.log(error)
+        return
+      }
+      console.log(stdout)
+      return stdout
+    })
 }
 // Iterate through our event queue until no events
 // remain. Susceptible to being replaced by a
@@ -29,7 +42,7 @@ let monitor = new CECMonitor('The Conch',
 )
 
 const getVolumeStatus = () => 0
-const getPowerStatus = () => false
+// const getPowerStatus = () => false
 const getConfig = () => config
 const getInitialState = () => (
   {
@@ -91,8 +104,8 @@ function runout () {
 // Takes socket.io socket as input,
 // which it probably shouldn't.
 // socket logic in general is likely
-// a mess and is certain to change
-// drastically
+// a mess and is almost certain to change
+// drastically.
 function theConch (openSocket) {
   monitor.on(CECMonitor.EVENTS.REPORT_POWER_STATUS,
     function (packet) {
