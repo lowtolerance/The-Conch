@@ -1,7 +1,7 @@
 'use strict';
 
 const config = {
-  maxVolume: 15
+  maxVolume: 12
 };
 
 const integerPercentage = (val, max) => Math.round(val * (100 / max));
@@ -38,9 +38,14 @@ const reducer = (state = getInitialState(), action) => {
   }
 };
 
+// Just a generic logger.
+// Logs our state object to the console every time it changes
+
 const logger = (store) => {
   console.log(store.getState());
 };
+
+// Updates percentage on our volume indicator
 
 const percentageUpdater = (store) => {
   const percentage = document.getElementById('percentage');
@@ -50,11 +55,14 @@ const percentageUpdater = (store) => {
   percentage.classList.add(volumePercentage(store.getState().volume, store.getState().config.maxVolume));
 };
 
+// Updates our power status indicator whenever the
+// state changes.
 const powerUpdater = (store) => {
   const power = document.getElementById('power');
   power.innerHTML = (store.getState().power) ? 'On' : 'Standby';
 };
 
+// Updates our readiness indicator everytime our state changes.
 const readyMonitor = (store) => {
   const ready = document.getElementById('percentage');
   if (store.getState().ready) ready.classList.remove('invisible');
@@ -84,37 +92,39 @@ const createStore = (reducer) => {
   store.state = getInitialState();
   store.handlers = handlers || [];
   store.getState = () => store.state;
-  store.subscribe = (actor) => store.handlers.push(actor);
-  store.dispatch = (action) => {
-    store.state = reducer(store.state, action);
+  store.restate = (newState) => {
+    store.state = newState;
     store.handlers.forEach(listener => listener(store));
   };
-  store.dispatch({});
+  store.subscribe = (actor) => store.handlers.push(actor);
+  // store.dispatch = (action) => {
+  // store.state = reducer(store.state, action)
+  //  store.handlers.forEach(listener => listener(store))
+  // }
+  // store.dispatch({})
   return store
 };
 
 /* eslint-env browser */
 
-const store = createStore(reducer);
+const clientStore = createStore(reducer);
 
 document.addEventListener('click', function (event) {
   switch (event.target.id) {
     case ('power_toggle'):
-      store.dispatch({type: 'POWER_TOGGLE'});
       ws.emit('TC', 'POWER_TOGGLE');
       break
     case ('volume_up'):
-      store.dispatch({type: 'VOLUME_UP'});
       ws.emit('TC', 'VOLUME_UP');
       break
     case ('volume_down'):
-      store.dispatch({type: 'VOLUME_DOWN'});
       ws.emit('TC', 'VOLUME_DOWN');
       break
   }
 });
 
 const ws = io();
+
 ws.on('connect', function () {
   console.log('connected');
 });
@@ -123,7 +133,7 @@ ws.on('disconnect', function () {
   console.log('disconnected');
 });
 
-ws.on('TC', function (data) {
-  console.log(data);
-  store.dispatch({type: data});
+ws.on('restate', function (data) {
+  console.log('restating application state');
+  clientStore.restate(data);
 });

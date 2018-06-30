@@ -9,12 +9,16 @@ const createStore = (reducer) => {
   store.state = getInitialState()
   store.handlers = handlers || []
   store.getState = () => store.state
-  store.subscribe = (actor) => store.handlers.push(actor)
-  store.dispatch = (action) => {
-    store.state = reducer(store.state, action)
+  store.restate = (newState) => {
+    store.state = newState
     store.handlers.forEach(listener => listener(store))
   }
-  store.dispatch({})
+  store.subscribe = (actor) => store.handlers.push(actor)
+  // store.dispatch = (action) => {
+  // store.state = reducer(store.state, action)
+  //  store.handlers.forEach(listener => listener(store))
+  // }
+  // store.dispatch({})
   return store
 }
 

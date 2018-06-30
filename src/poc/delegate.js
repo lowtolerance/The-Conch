@@ -11,7 +11,7 @@ const enqueue = require('./utils/enqueue')
 // the chain of lookup. undefined results also terminate
 // the chain, outputting an error.
 
-function dispatch (result) {
+function delegate (result) {
   switch (typeof result) {
     case 'string':
       console.log(`Adding event '${result}' to queue`)
@@ -31,4 +31,4 @@ function dispatch (result) {
   }
 }
 
-module.exports = dispatch
+module.exports = delegate
