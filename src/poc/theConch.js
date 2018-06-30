@@ -2,22 +2,7 @@ const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
 const delegate = require('./delegate')
-const power = require('./utils/power')
-const createStore = require('./reredux/createStore.js')
-const tvReducer = require('./reredux/tvReducer.js')
-const serverStore = createStore(tvReducer)
-
-serverStore.subscribe((store) => {
-  console.log(store.getState())
-  if (global.socket) {
-    global.socket.emit('restate', store.getState())
-  }
-})
-serverStore.subscribe((store) => {
-  if (store.getState().power !== power.getStatus()) power.toggle()
-})
-
-// Main
+const store = require('./store')
 
 // Takes socket.io socket as input,
 // which it probably shouldn't.
@@ -28,17 +13,21 @@ function theConch (openSocket) {
   global.eventQueue = []
   openSocket.on('connect', connected => {
     global.socket = connected
-    serverStore.dispatch({type: 'READY'})
+    store.dispatch({type: 'READY'})
     connected.on('TC', data => {
       console.time()
       enqueue(data)
       while (this.eventQueue.length !== 0) {
         const event = dequeue()
-        const action = lookup(event)
+        const action = lookup(event, store)
         delegate(action)
       }
       console.timeEnd()
     })
+  })
+  openSocket.on('disconnnect', reason => {
+    console.log(`disconnected: ${reason}`)
+    delete global.socket
   })
 }
 
