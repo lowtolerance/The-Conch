@@ -1,6 +1,7 @@
 const enqueue = require('./utils/enqueue')
 const dequeue = require('./utils/dequeue')
 const lookup = require('./lookup')
+const delegate = require('./delegate')
 const power = require('./utils/power')
 const createStore = require('./reredux/createStore.js')
 const tvReducer = require('./reredux/tvReducer.js')
@@ -33,7 +34,8 @@ function theConch (openSocket) {
       enqueue(data)
       while (this.eventQueue.length !== 0) {
         const event = dequeue()
-        lookup(event)
+        const action = lookup(event)
+        delegate(action)
       }
       console.timeEnd()
     })
