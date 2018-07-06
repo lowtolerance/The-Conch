@@ -26,9 +26,5 @@ export default function ruleValidates (rule) {
   if (!result.valid) {
     result.errors.map(error => console.log(`ERROR: ${error}`))
     return false
-  } else {
-    // let db = fire.database().ref('rulebook')
-    // db.push(rule)
-    return true
-  }
+  } else return true
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Dashboard from './Dashboard'
 import Devices from './Devices'
+
 class App extends Component {
   constructor (props) {
     super(props)
@@ -13,15 +14,20 @@ class App extends Component {
   }
 
   handleClick (e) {
-    this.setState({devices: {visible: !this.state.devices.visible}})
+    this.setState({
+      devices: {
+        visible: !this.state.devices.visible
+      }
+    })
   }
 
   render () {
+    const { devices } = this.state
     return (
       <div className='App'>
         <Dashboard />
         <button className='btn btn-info' onClick={this.handleClick}>Devices</button>
-        {(this.state.devices.visible) &&
+        {(devices.visible) &&
         <Devices />}
       </div>
     )
