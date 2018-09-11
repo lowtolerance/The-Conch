@@ -9,7 +9,7 @@ const emitEvent = require('./actions.js')
 // will look up the passed in event in a small
 // in-memory database and return the result to
 // be delegated
-function lookup (event, store) {
+function lookup (event) {
   switch (event) {
     case 'A90:SONY:12':
       console.log(`'A90:SONY:12' returns 'POWER_TOGGLE'`)

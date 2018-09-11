@@ -19,7 +19,7 @@ function theConch (openSocket) {
       enqueue(data)
       while (this.eventQueue.length !== 0) {
         const event = dequeue()
-        const action = lookup(event, store)
+        const action = lookup(event)
         delegate(action)
       }
       console.timeEnd()
