@@ -26,7 +26,7 @@ function theConch (openSocket) {
     })
   })
   openSocket.on('disconnnect', reason => {
-    console.log(`disconnected: ${reason}`)
+    console.log(`Disconnected: ${reason}`)
     delete global.socket
   })
 }

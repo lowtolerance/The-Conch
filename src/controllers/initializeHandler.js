@@ -5,7 +5,7 @@ const listener = {
   name: 'IR Event Receiver',
   handles: 'infrared',
   handler: {
-    initializer: initSocket,
+    init: initSocket,
     prefix: 'IR'
   }
 }
@@ -22,7 +22,7 @@ function initSocket () {
 function initializeHandler (rule) {
   if (listener.handles === rule.input.protocol) {
     console.log(`Starting ${listener.name} listener to satisfy rule '${rule.name}'`)
-    listener.handler.initializer(listener.handler.prefix)
+    listener.handler.init()
   } else {
     console.log(`No valid handler found for protocol '${rule.input.protocol}'`)
   }

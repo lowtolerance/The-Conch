@@ -11,7 +11,7 @@ const Circle = (props) => (
   </div>
 )
 
-class HelloMessage extends React.Component {
+class conchControls extends React.Component {
   render () {
     return (
       <Layout title='theConch'>
@@ -21,10 +21,13 @@ class HelloMessage extends React.Component {
           <button id='power_toggle'>Power Toggle</button>
           <button id='volume_up'>Volume Up</button>
           <button id='volume_down'>Volume Down</button>
+          <a href='/power_toggle'>Power Toggle (routed)</a>
+          <a href='/volume_up'>Volume Up (routed)</a>
+          <a href='/volume_down'>Volume Down (routed)</a>
         </div>
       </Layout>
     )
   }
 }
 
-module.exports = HelloMessage
+module.exports = conchControls

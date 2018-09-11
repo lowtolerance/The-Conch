@@ -11,6 +11,7 @@ const power = {
     }
     console.log(stdout)
   },
+
   async off () {
     const { stdout, stderr } = await exec(
       'echo standby 0 | cec-client RPI -s -d 1'
@@ -27,6 +28,7 @@ const power = {
       this.off()
     } else this.on()
   },
+
   async getStatus () {
     const { stdout, stderr } = await exec(
       'echo pow 0 | cec-client RPI -s -d 1'
